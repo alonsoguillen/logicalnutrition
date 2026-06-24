@@ -1,0 +1,6 @@
+{
+  "framework": "astro",
+  "rootDirectory": "website",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
+}
