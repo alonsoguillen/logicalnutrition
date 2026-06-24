@@ -42,6 +42,11 @@ const jsonLd = structuredData
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark" />
 
+    <script is:inline>
+      // Mark JS as enabled so animations only hide content when JS can reveal it
+      document.documentElement.classList.add('js-enabled');
+    </script>
+
     <title>{title}</title>
 
     <link rel="canonical" href={canonicalUrl} />

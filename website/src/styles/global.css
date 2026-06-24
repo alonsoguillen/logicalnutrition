@@ -347,12 +347,15 @@ p {
 }
 
 .animate-on-scroll {
-  opacity: 0;
-  transform: translateY(24px);
   transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
 
-.animate-on-scroll.is-visible {
+.js-enabled .animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.js-enabled .animate-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
