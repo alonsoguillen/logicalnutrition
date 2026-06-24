@@ -1,0 +1,77 @@
+---
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  label?: string;
+  canonical?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, label, canonical, structuredData } = Astro.props;
+---
+
+<Layout title={title} description={description} canonical={canonical} structuredData={structuredData}>
+  <div class="page">
+    <Header />
+
+    <main>
+      <header class="page-hero">
+        <div class="container">
+          {label && <span class="page-label">{label}</span>}
+          <h1 class="page-title">{title.split(' | ')[0]}</h1>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <slot />
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+  </div>
+</Layout>
+
+<style>
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-hero {
+    padding: calc(var(--space-24) + var(--space-4)) 0 var(--space-10);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .page-content {
+    flex: 1;
+    padding: var(--space-12) 0 var(--space-20);
+  }
+
+  .page-content :global(.container-narrow) {
+    max-width: var(--container-narrow);
+  }
+</style>

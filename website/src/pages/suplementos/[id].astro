@@ -1,0 +1,664 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ProductMockup from '../../components/ProductMockup.astro';
+import Badge from '../../components/Badge.astro';
+import FAQ from '../../components/FAQ.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const supplements = await getCollection('supplements');
+  return supplements.map((supplement) => ({
+    params: { id: supplement.id },
+    props: { supplement },
+  }));
+}
+
+interface Props {
+  supplement: CollectionEntry<'supplements'>;
+}
+
+const { supplement } = Astro.props;
+const { Content } = await render(supplement);
+
+const {
+  title,
+  description,
+  shortDescription,
+  tags,
+  badge,
+  price,
+  currency,
+  servingSize,
+  servingsPerContainer,
+  flavor,
+  ingredients,
+  allergens,
+  warnings,
+  certificateUrl,
+  related,
+  benefits,
+  howToUse,
+  scienceSummary,
+  studies,
+  faqs,
+} = supplement.data;
+
+const displayPrice = price !== undefined
+  ? new Intl.NumberFormat('es-PE', { style: 'currency', currency: currency || 'PEN' }).format(price)
+  : null;
+
+const perServing = price && servingsPerContainer
+  ? new Intl.NumberFormat('es-PE', { style: 'currency', currency: currency || 'PEN' }).format(price / servingsPerContainer)
+  : null;
+
+const allSupplements = await getCollection('supplements');
+const relatedProducts = allSupplements.filter((s) => related.includes(s.id) && s.id !== supplement.id);
+
+const whatsappMessage = encodeURIComponent(`Hola, quiero comprar ${title} de Logical Nutrition.`);
+const whatsappUrl = `https://wa.me/56912345678?text=${whatsappMessage}`;
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: title,
+  description: shortDescription || description,
+  image: `${Astro.site}/og-default.jpg`,
+  brand: {
+    '@type': 'Brand',
+    name: 'Logical Nutrition',
+  },
+  offers: price
+    ? {
+        '@type': 'Offer',
+        priceCurrency: currency,
+        price: price.toString(),
+        availability: 'https://schema.org/InStock',
+        url: Astro.url.toString(),
+      }
+    : undefined,
+};
+---
+
+<Layout
+  title={`${title} | Logical Nutrition`}
+  description={description}
+  canonical={`/suplementos/${supplement.id}`}
+  type="product"
+  structuredData={productSchema}
+>
+  <div class="page">
+    <Header />
+
+    <main>
+      <article class="product-hero">
+        <div class="container product-hero-grid">
+          <div class="product-visual animate-on-scroll">
+            <ProductMockup name={title} />
+          </div>
+
+          <div class="product-info">
+            <div class="animate-on-scroll stagger-1">
+              {badge && <Badge variant="accent">{badge}</Badge>}
+              <h1 class="product-title">{title}</h1>
+              <p class="product-description">{shortDescription || description}</p>
+            </div>
+
+            <div class="product-meta animate-on-scroll stagger-2">
+              {displayPrice && (
+                <div class="product-price-block">
+                  <span class="product-price">{displayPrice}</span>
+                  {perServing && <span class="product-per-serving">{perServing} por servicio</span>}
+                </div>
+              )}
+
+              <div class="product-specs">
+                {servingSize && (
+                  <div class="spec">
+                    <span class="spec-label">Dosis</span>
+                    <span class="spec-value">{servingSize}</span>
+                  </div>
+                )}
+                {servingsPerContainer && (
+                  <div class="spec">
+                    <span class="spec-label">Servicios</span>
+                    <span class="spec-value">{servingsPerContainer}</span>
+                  </div>
+                )}
+                {flavor && (
+                  <div class="spec">
+                    <span class="spec-label">Sabor</span>
+                    <span class="spec-value">{flavor}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div class="product-actions animate-on-scroll stagger-3">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-large">
+                <span>Comprar por WhatsApp</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="#detalles" class="btn btn-outline">Ver detalles</a>
+            </div>
+
+            <div class="product-trust animate-on-scroll stagger-4">
+              <span class="trust-item">✓ Testado en laboratorio</span>
+              <span class="trust-item">✓ Sin aditivos</span>
+              <span class="trust-item">✓ Envío a todo Chile</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <section id="detalles" class="product-details section">
+        <div class="container">
+          <div class="details-grid">
+            <div class="details-main">
+              <div class="details-tabs">
+                <div class="tab-content">
+                  <h2 class="details-heading">Descripción</h2>
+                  <div class="prose">
+                    <Content />
+                  </div>
+                </div>
+
+                {benefits.length > 0 && (
+                  <div class="tab-content">
+                    <h2 class="details-heading">Beneficios clave</h2>
+                    <ul class="benefits-list">
+                      {benefits.map((benefit) => (
+                        <li class="benefit-item">
+                          <span class="benefit-check" aria-hidden="true">—</span>
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {scienceSummary && (
+                  <div class="tab-content">
+                    <h2 class="details-heading">Resumen científico</h2>
+                    <p class="science-summary">{scienceSummary}</p>
+                    {studies.length > 0 && (
+                      <div class="studies-list">
+                        <h3 class="studies-title">Estudios de referencia</h3>
+                        <ul>
+                          {studies.map((study) => (
+                            <li class="study-item">
+                              <span class="study-title">{study.title}</span>
+                              {(study.journal || study.year) && (
+                                <span class="study-meta">
+                                  {study.journal}{study.journal && study.year ? ', ' : ''}{study.year}
+                                </span>
+                              )}
+                              {study.url && (
+                                <a href={study.url} target="_blank" rel="noopener noreferrer" class="study-link">
+                                  Ver estudio
+                                </a>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {howToUse && (
+                  <div class="tab-content">
+                    <h2 class="details-heading">Modo de uso</h2>
+                    <p class="how-to-use">{howToUse}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <aside class="details-sidebar">
+              <div class="sidebar-card">
+                <h3 class="sidebar-title">Información del producto</h3>
+                {ingredients && (
+                  <div class="sidebar-row">
+                    <span class="sidebar-label">Ingredientes</span>
+                    <p class="sidebar-value">{ingredients}</p>
+                  </div>
+                )}
+                {allergens && (
+                  <div class="sidebar-row">
+                    <span class="sidebar-label">Alergenos</span>
+                    <p class="sidebar-value">{allergens}</p>
+                  </div>
+                )}
+                {warnings && (
+                  <div class="sidebar-row">
+                    <span class="sidebar-label">Advertencias</span>
+                    <p class="sidebar-value">{warnings}</p>
+                  </div>
+                )}
+                {certificateUrl && (
+                  <a href={certificateUrl} target="_blank" rel="noopener noreferrer" class="certificate-link">
+                    Ver certificado de análisis
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+
+              <div class="sidebar-card">
+                <h3 class="sidebar-title">Etiquetas</h3>
+                <div class="details-tags">
+                  {tags.map((tag) => (
+                    <span class="details-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {faqs.length > 0 && (
+        <section class="product-faqs section">
+          <div class="container container-narrow">
+            <h2 class="details-heading details-heading--center">Preguntas frecuentes</h2>
+            <FAQ items={faqs} />
+          </div>
+        </section>
+      )}
+
+      {relatedProducts.length > 0 && (
+        <section class="related-products section">
+          <div class="container">
+            <h2 class="details-heading details-heading--center">También te puede interesar</h2>
+            <div class="related-grid">
+              {relatedProducts.map((related) => (
+                <a href={`/suplementos/${related.id}`} class="related-card card">
+                  <h3 class="related-title">{related.data.title}</h3>
+                  <p class="related-description">{related.data.shortDescription || related.data.description}</p>
+                  <span class="related-link">Ver producto</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+  </div>
+</Layout>
+
+<style>
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+  }
+
+  .product-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--space-24) + var(--space-8)) 0 var(--space-16);
+  }
+
+  .product-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .product-hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+      text-align: center;
+    }
+
+    .product-visual {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+  }
+
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .product-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: var(--space-4) 0 var(--space-4);
+  }
+
+  .product-description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    max-width: 520px;
+  }
+
+  .product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .product-price-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .product-price {
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .product-per-serving {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .product-specs {
+    display: flex;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .spec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .spec-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+  }
+
+  .spec-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .product-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .product-actions {
+      justify-content: center;
+    }
+  }
+
+  .product-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .product-trust {
+      justify-content: center;
+    }
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .details-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+    }
+  }
+
+  .details-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .details-heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    margin-bottom: var(--space-6);
+    letter-spacing: -0.02em;
+  }
+
+  .details-heading--center {
+    text-align: center;
+  }
+
+  .benefits-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
+
+  .benefit-check {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .science-summary {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+  }
+
+  .studies-list ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .study-item {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .study-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .study-meta {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .study-link {
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .study-link:hover {
+    text-decoration: underline;
+  }
+
+  .how-to-use {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .details-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: sticky;
+    top: 100px;
+  }
+
+  @media (max-width: 900px) {
+    .details-sidebar {
+      position: static;
+    }
+  }
+
+  .sidebar-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-6);
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: var(--space-5);
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-row {
+    margin-bottom: var(--space-5);
+  }
+
+  .sidebar-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .sidebar-label {
+    display: block;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .sidebar-value {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .certificate-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-top: var(--space-2);
+  }
+
+  .certificate-link:hover {
+    text-decoration: underline;
+  }
+
+  .details-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .details-tag {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .product-faqs {
+    background: var(--color-surface-elevated);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .related-products {
+    text-align: center;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-10);
+  }
+
+  .related-card {
+    padding: var(--space-8);
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .related-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .related-description {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .related-link {
+    margin-top: auto;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+</style>

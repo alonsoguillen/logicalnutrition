@@ -1,0 +1,94 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+---
+
+<PageShell
+  title="Envíos y devoluciones | Logical Nutrition"
+  description="Información sobre envíos a todo el Perú, tiempos de entrega, métodos de pago y política de devoluciones."
+  label="Envíos"
+  canonical="/envios"
+>
+  <div class="container container-narrow">
+    <div class="content-block animate-on-scroll">
+      <h2>Cobertura y tiempos de entrega</h2>
+      <p>
+        Realizamos envíos a todo el Perú a través de courier. Una vez confirmado tu pago, procesamos el pedido en 24-48 horas hábiles. Los tiempos estimados de entrega son:
+      </p>
+      <ul>
+        <li><strong>Lima:</strong> 1-2 días hábiles.</li>
+        <li><strong>Provincias principales:</strong> 2-4 días hábiles.</li>
+        <li><strong>Zonas remotas:</strong> hasta 5-7 días hábiles.</li>
+      </ul>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-1">
+      <h2>Métodos de pago</h2>
+      <p>
+        Actualmente gestionamos los pedidos por WhatsApp para darte una atención personalizada. Aceptamos:
+      </p>
+      <ul>
+        <li>Transferencia bancaria</li>
+        <li>Yape</li>
+        <li>Plin</li>
+      </ul>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-2">
+      <h2>Costos de envío</h2>
+      <p>
+        El costo de envío se calcula según la ciudad de destino y se informa antes de confirmar tu pedido. Realizamos envíos gratis en Lima Metropolitana en compras mayores a S/ 150.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-3">
+      <h2>Política de devoluciones</h2>
+      <p>
+        Tu satisfacción importa. Si el producto llega en mal estado, incompleto o no corresponde a lo solicitado, puedes solicitar cambio o reembolso dentro de los 7 días posteriores a la recepción. Para iniciar una devolución, contáctanos por WhatsApp con tu número de pedido y fotos del producto recibido.
+      </p>
+    </div>
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .content-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .content-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .content-block h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.01em;
+  }
+
+  .content-block p,
+  .content-block ul {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .content-block p {
+    margin-bottom: var(--space-4);
+  }
+
+  .content-block ul {
+    padding-left: var(--space-6);
+    margin-bottom: 0;
+  }
+
+  .content-block li {
+    margin-bottom: var(--space-2);
+  }
+
+  .content-block strong {
+    color: var(--color-text);
+  }
+</style>

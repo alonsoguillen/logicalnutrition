@@ -1,0 +1,130 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+
+const guides = [
+  {
+    title: 'Guía completa de la creatina',
+    description: 'Todo lo que necesitas saber sobre el suplemento más estudiado del mundo: dosis, beneficios, mitos y cómo usarlo correctamente.',
+    href: '/guia/creatina-completa',
+    readTime: '6 min',
+  },
+  {
+    title: 'L-Citrulina vs L-Arginina',
+    description: '¿Por qué la citrulina supera a la arginina como precursor de óxido nítrico? Comparativa basada en evidencia.',
+    href: '/guia/citrulina-vs-arginina',
+    readTime: '5 min',
+  },
+  {
+    title: 'Cómo leer una etiqueta de suplemento',
+    description: 'Aprende a identificar dosis efectivas, fórmulas propietarias y trucos de marketing antes de comprar.',
+    href: '/guia/leer-etiquetas',
+    readTime: '7 min',
+  },
+];
+---
+
+<PageShell
+  title="Guía | Logical Nutrition"
+  description="Artículos y guías sobre suplementación basada en evidencia. Aprende a tomar decisiones informadas."
+  label="Guía"
+  canonical="/guia"
+>
+  <div class="container container-narrow">
+    <div class="guides-intro animate-on-scroll">
+      <p class="lead">
+        La suplementación efectiva empieza por entender qué tomas y por qué. Aquí compartimos guías claras, basadas en evidencia y libres de hype.
+      </p>
+    </div>
+
+    <div class="guides-list">
+      {guides.map((guide, index) => (
+        <a href={guide.href} class="guide-card animate-on-scroll stagger-${index + 1}">
+          <div class="guide-meta">
+            <span class="guide-label">Guía</span>
+            <span class="guide-read">{guide.readTime} de lectura</span>
+          </div>
+          <h2 class="guide-title">{guide.title}</h2>
+          <p class="guide-description">{guide.description}</p>
+          <span class="guide-link">Leer guía</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .guides-intro {
+    margin-bottom: var(--space-12);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+
+  .guides-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .guide-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-8);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition-base), transform var(--transition-base) var(--ease-out-expo);
+  }
+
+  .guide-card:hover {
+    border-color: var(--color-border-hover);
+    transform: translateX(8px);
+  }
+
+  .guide-meta {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .guide-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .guide-read {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .guide-title {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+
+  .guide-description {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-5);
+  }
+
+  .guide-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+</style>

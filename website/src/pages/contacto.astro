@@ -1,0 +1,175 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+---
+
+<PageShell
+  title="Contacto | Logical Nutrition"
+  description="Contáctanos por WhatsApp, email o redes sociales. Estamos para resolver tus dudas sobre suplementación."
+  label="Contacto"
+  canonical="/contacto"
+>
+  <div class="container container-narrow">
+    <div class="contact-intro animate-on-scroll">
+      <p class="lead">¿Tienes dudas sobre dosis, combinaciones o envíos? Escríbenos directamente.</p>
+    </div>
+
+    <div class="contact-grid">
+      <a href="https://wa.me/56912345678?text=Hola%2C%20quiero%20consultar%20por%20los%20suplementos%20de%20Logical%20Nutrition." target="_blank" rel="noopener noreferrer" class="contact-card animate-on-scroll stagger-1">
+        <span class="contact-icon" aria-hidden="true">💬</span>
+        <h2>WhatsApp</h2>
+        <p>Respuesta rápida para pedidos, dudas y asesoría personalizada.</p>
+        <span class="contact-link">Escribir por WhatsApp</span>
+      </a>
+
+      <a href="mailto:hola@logicalnutrition.com" class="contact-card animate-on-scroll stagger-2">
+        <span class="contact-icon" aria-hidden="true">✉️</span>
+        <h2>Email</h2>
+        <p>Para consultas más detalladas, partnerships o prensa.</p>
+        <span class="contact-link">hola@logicalnutrition.com</span>
+      </a>
+
+      <div class="contact-card animate-on-scroll stagger-3">
+        <span class="contact-icon" aria-hidden="true">📍</span>
+        <h2>Ubicación</h2>
+        <p>Envíos a todo el Perú desde nuestras bodegas en Lima.</p>
+        <span class="contact-link">Perú</span>
+      </div>
+    </div>
+
+    <form class="contact-form animate-on-scroll" action="#" method="post" onsubmit="event.preventDefault();">
+      <h2>Envíanos un mensaje</h2>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" name="name" class="input" required />
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="input" required />
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="subject">Asunto</label>
+        <input type="text" id="subject" name="subject" class="input" required />
+      </div>
+      <div class="form-field">
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" class="input" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-accent">Enviar mensaje</button>
+    </form>
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .contact-intro {
+    margin-bottom: var(--space-12);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-16);
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-8);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition-base), transform var(--transition-base) var(--ease-out-expo);
+  }
+
+  .contact-card:hover {
+    border-color: var(--color-border-hover);
+    transform: translateY(-4px);
+  }
+
+  .contact-icon {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-4);
+    display: block;
+  }
+
+  .contact-card h2 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+
+  .contact-card p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-5);
+  }
+
+  .contact-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+
+  .contact-form {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .contact-form h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: var(--space-2);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .form-field label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+</style>

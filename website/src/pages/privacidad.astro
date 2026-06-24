@@ -1,0 +1,61 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+---
+
+<PageShell
+  title="Política de privacidad | Logical Nutrition"
+  description="Política de privacidad de Logical Nutrition. Conoce cómo protegemos tu información personal."
+  label="Legal"
+  canonical="/privacidad"
+>
+  <div class="container container-narrow">
+    <div class="content-block animate-on-scroll">
+      <h2>1. Información que recopilamos</h2>
+      <p>
+        Recopilamos únicamente la información necesaria para procesar tus pedidos y responder tus consultas: nombre, dirección, teléfono, email y detalles del pedido. No vendemos ni compartimos tu información con terceros con fines publicitarios.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-1">
+      <h2>2. Uso de la información</h2>
+      <p>
+        Usamos tus datos para gestionar envíos, comunicarnos sobre tu pedido y, si lo autorizas, enviarte contenido relevante sobre suplementación. Puedes darte de baja en cualquier momento.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-2">
+      <h2>3. Seguridad</h2>
+      <p>
+        Implementamos medidas razonables para proteger tu información. Los pagos se gestionan a través de plataformas seguras; no almacenamos datos de tarjetas bancarias.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-3">
+      <h2>4. Tus derechos</h2>
+      <p>
+        Puedes solicitar acceso, rectificación o eliminación de tus datos personales escribiéndonos a hola@logicalnutrition.com.
+      </p>
+    </div>
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .content-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .content-block h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: var(--space-4);
+  }
+
+  .content-block p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+</style>

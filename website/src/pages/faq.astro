@@ -1,0 +1,68 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+import FAQ from '../components/FAQ.astro';
+
+const faqItems = [
+  {
+    question: '¿De dónde provienen sus materias primas?',
+    answer: 'Trabajamos con proveedores certificados internacionalmente bajo estándares GMP y BPF. Priorizamos compuestos de origen sintético o fermentado con alto grado de pureza y trazabilidad documentada.',
+  },
+  {
+    question: '¿Cómo garantizan la pureza de los productos?',
+    answer: 'Cada lote es analizado para verificar identidad (FTIR), pureza ≥ 99%, y ausencia de contaminantes microbiológicos y metales pesados. Los certificados de análisis están disponibles bajo solicitud.',
+  },
+  {
+    question: '¿Los productos contienen aditivos o saborizantes?',
+    answer: 'No. Nuestra línea actual es single-ingredient y sin sabor. No incluimos colorantes, antiaglomerantes, edulcorantes ni rellenos.',
+  },
+  {
+    question: '¿Puedo tomar creatina y L-citrulina juntas?',
+    answer: 'Sí. Ambas tienen mecanismos complementarios: la creatina mejora la resíntesis de ATP y la L-citrulina potencia el flujo sanguíneo. Puedes tomarlas juntas antes del entrenamiento.',
+  },
+  {
+    question: '¿Necesito hacer fase de carga con creatina?',
+    answer: 'No es necesaria. Una dosis diaria de 5g es suficiente para saturar los depósitos musculares en 2-4 semanas, con menos molestias gastrointestinales.',
+  },
+  {
+    question: '¿Hacen envíos a todo el Perú?',
+    answer: 'Sí. Enviamos a todo el territorio peruano a través de courier. El tiempo estimado es de 2 a 5 días hábiles según la ciudad.',
+  },
+  {
+    question: '¿Cuál es el método de pago?',
+    answer: 'Actualmente gestionamos pedidos directamente por WhatsApp. Aceptamos transferencia bancaria, Yape y Plin. Una vez confirmado el pago, procesamos el envío en 24-48 horas hábiles.',
+  },
+  {
+    question: '¿Tienen política de devolución?',
+    answer: 'Sí. Si el producto llega en mal estado o no corresponde a lo solicitado, puedes solicitar cambio o reembolso dentro de los 7 días posteriores a la recepción.',
+  },
+];
+---
+
+<PageShell
+  title="Preguntas frecuentes | Logical Nutrition"
+  description="Respuestas claras sobre pureza, envíos, dosis y uso de nuestros suplementos."
+  label="FAQ"
+  canonical="/faq"
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }}
+>
+  <div class="container container-narrow animate-on-scroll">
+    <FAQ items={faqItems} />
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+</style>

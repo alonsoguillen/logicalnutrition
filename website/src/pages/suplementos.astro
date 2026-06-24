@@ -1,0 +1,169 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SearchBar from '../components/SearchBar.astro';
+import TagFilter from '../components/TagFilter.astro';
+import SupplementCard from '../components/SupplementCard.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+
+const supplements = await getCollection('supplements');
+supplements.sort((a, b) => a.data.order - b.data.order);
+
+const allTags = [...new Set(supplements.flatMap((s) => s.data.tags))].sort();
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Logical Nutrition',
+  url: Astro.site,
+  description: 'Suplementos con respaldo científico y resultados probados.',
+};
+---
+
+<Layout
+  title="Suplementos | Logical Nutrition"
+  description="Explora nuestra línea de suplementos con respaldo científico. Creatina monohidratada y L-Citrulina de máxima pureza."
+  canonical="/suplementos"
+  structuredData={organizationSchema}
+>
+  <div class="page">
+    <Header />
+
+    <main class="supplements-page">
+      <div class="container">
+        <div class="page-header animate-on-scroll">
+          <SectionHeader
+            label="Catálogo"
+            title="Suplementos"
+            subtitle="Compuestos puros, dosis efectivas, resultados medibles. Cada producto está respaldado por la literatura científica actual."
+            align="center"
+          />
+        </div>
+
+        <div class="controls animate-on-scroll stagger-1">
+          <SearchBar />
+          <TagFilter tags={allTags} />
+        </div>
+
+        <div class="supplements-grid animate-on-scroll stagger-2" id="supplements-grid">
+          {supplements.map((supplement) => (
+            <SupplementCard supplement={supplement} />
+          ))}
+        </div>
+
+        <div class="no-results" id="no-results" style="display: none;">
+          <p>No se encontraron suplementos que coincidan con tu búsqueda.</p>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+  </div>
+</Layout>
+
+<script>
+  (function() {
+    const searchInput = document.getElementById('supplement-search') as HTMLInputElement | null;
+    const tagButtons = document.querySelectorAll('.tag-filter-btn');
+    const cards = document.querySelectorAll('.supplement-card');
+    const noResults = document.getElementById('no-results');
+    const grid = document.getElementById('supplements-grid');
+
+    let currentTag = 'all';
+    let currentQuery = '';
+
+    function filterCards() {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const tags = (card.getAttribute('data-tags') || '').toLowerCase().split(',');
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const description = (card.getAttribute('data-description') || '').toLowerCase();
+
+        const matchesTag = currentTag === 'all' || tags.includes(currentTag.toLowerCase());
+        const matchesQuery = !currentQuery ||
+          title.includes(currentQuery) ||
+          description.includes(currentQuery) ||
+          tags.some(t => t.includes(currentQuery));
+
+        if (matchesTag && matchesQuery) {
+          (card as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        if (noResults) noResults.style.display = 'block';
+        if (grid) grid.style.display = 'none';
+      } else {
+        if (noResults) noResults.style.display = 'none';
+        if (grid) grid.style.display = '';
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        filterCards();
+      });
+    }
+
+    tagButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tagButtons.forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        currentTag = btn.getAttribute('data-tag') || 'all';
+        filterCards();
+      });
+    });
+  })();
+</script>
+
+<style>
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .supplements-page {
+    padding: calc(var(--space-24) + var(--space-4)) 0 var(--space-16);
+    flex: 1;
+  }
+
+  .page-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .supplements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+    gap: var(--space-5);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: var(--space-16) 0;
+    opacity: 0.5;
+  }
+
+  .no-results p {
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+</style>

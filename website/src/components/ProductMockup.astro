@@ -1,0 +1,144 @@
+---
+interface Props {
+  name: string;
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+
+const { name, variant = 'dark', class: className = '' } = Astro.props;
+
+const initial = name.charAt(0).toUpperCase();
+const shortName = name.split(' ').slice(0, 2).join(' ');
+---
+
+<figure class={`product-mockup product-mockup--${variant} ${className}`} aria-label={`Envase de ${name}`}>
+  <svg viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-mockup-svg">
+    <!-- Jar body -->
+    <rect x="60" y="80" width="200" height="260" rx="12" class="mockup-jar" />
+    <!-- Jar highlight -->
+    <rect x="75" y="95" width="12" height="230" rx="6" class="mockup-highlight" />
+    <!-- Lid -->
+    <rect x="55" y="40" width="210" height="50" rx="6" class="mockup-lid" />
+    <rect x="70" y="55" width="180" height="8" rx="4" class="mockup-lid-line" />
+    <!-- Label area -->
+    <rect x="85" y="130" width="150" height="160" rx="2" class="mockup-label" />
+    <!-- Initial mark -->
+    <text x="160" y="205" text-anchor="middle" class="mockup-initial">{initial}</text>
+    <!-- Product name -->
+    <text x="160" y="250" text-anchor="middle" class="mockup-name">{shortName}</text>
+    <!-- Weight indicator -->
+    <text x="160" y="275" text-anchor="middle" class="mockup-weight">PUREZA GARANTIZADA</text>
+  </svg>
+</figure>
+
+<style>
+  .product-mockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-mockup-svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .product-mockup--dark .mockup-jar {
+    fill: #111111;
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 1;
+  }
+
+  .product-mockup--dark .mockup-lid {
+    fill: #1a1a1a;
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 1;
+  }
+
+  .product-mockup--dark .mockup-lid-line {
+    fill: rgba(255, 255, 255, 0.08);
+  }
+
+  .product-mockup--dark .mockup-highlight {
+    fill: rgba(255, 255, 255, 0.04);
+  }
+
+  .product-mockup--dark .mockup-label {
+    fill: rgba(255, 255, 255, 0.03);
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1;
+  }
+
+  .product-mockup--dark .mockup-initial {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-style: italic;
+    fill: var(--color-accent);
+  }
+
+  .product-mockup--dark .mockup-name {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    fill: rgba(255, 255, 255, 0.9);
+  }
+
+  .product-mockup--dark .mockup-weight {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    fill: var(--color-accent);
+  }
+
+  .product-mockup--light .mockup-jar {
+    fill: #ffffff;
+    stroke: rgba(10, 10, 10, 0.1);
+    stroke-width: 1;
+  }
+
+  .product-mockup--light .mockup-lid {
+    fill: #f0eeea;
+    stroke: rgba(10, 10, 10, 0.12);
+    stroke-width: 1;
+  }
+
+  .product-mockup--light .mockup-lid-line {
+    fill: rgba(10, 10, 10, 0.06);
+  }
+
+  .product-mockup--light .mockup-highlight {
+    fill: rgba(10, 10, 10, 0.03);
+  }
+
+  .product-mockup--light .mockup-label {
+    fill: rgba(10, 10, 10, 0.02);
+    stroke: rgba(10, 10, 10, 0.06);
+    stroke-width: 1;
+  }
+
+  .product-mockup--light .mockup-initial {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-style: italic;
+    fill: #000000;
+  }
+
+  .product-mockup--light .mockup-name {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    fill: rgba(10, 10, 10, 0.85);
+  }
+
+  .product-mockup--light .mockup-weight {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    fill: rgba(10, 10, 10, 0.5);
+  }
+</style>

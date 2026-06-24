@@ -1,0 +1,188 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
+
+interface Props {
+  supplement: CollectionEntry<'supplements'>;
+}
+
+const { supplement } = Astro.props;
+const { title, description, shortDescription, tags, price, currency, servingSize, servingsPerContainer, badge } = supplement.data;
+
+const displayPrice = price !== undefined
+  ? new Intl.NumberFormat('es-PE', { style: 'currency', currency: currency || 'PEN' }).format(price)
+  : null;
+
+const perServing = price && servingsPerContainer
+  ? new Intl.NumberFormat('es-PE', { style: 'currency', currency: currency || 'PEN' }).format(price / servingsPerContainer)
+  : null;
+---
+
+<article class="supplement-card card" data-tags={tags.join(',')} data-title={title.toLowerCase()} data-description={description.toLowerCase()}>
+  <div class="card-header">
+    <div>
+      {badge && <Badge variant="accent">{badge}</Badge>}
+      <h3 class="card-title">{title}</h3>
+    </div>
+    {displayPrice && (
+      <div class="card-price-wrapper">
+        <span class="card-price">{displayPrice}</span>
+        {perServing && <span class="card-per-serving">{perServing}/servicio</span>}
+      </div>
+    )}
+  </div>
+
+  <p class="card-description">{shortDescription || description}</p>
+
+  <div class="card-meta">
+    {servingSize && (
+      <span class="meta-item">
+        <span class="meta-label">Dosis</span>
+        <span class="meta-value">{servingSize}</span>
+      </span>
+    )}
+    {servingsPerContainer && (
+      <span class="meta-item">
+        <span class="meta-label">Servicios</span>
+        <span class="meta-value">{servingsPerContainer}</span>
+      </span>
+    )}
+  </div>
+
+  <div class="card-tags">
+    {tags.map((tag) => (
+      <span class="tag">{tag}</span>
+    ))}
+  </div>
+
+  <a href={`/suplementos/${supplement.id}`} class="card-link">
+    <span>Ver producto</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</article>
+
+<style>
+  .supplement-card {
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    height: 100%;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .card-header > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .card-price-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+    text-align: right;
+  }
+
+  .card-price {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+  }
+
+  .card-per-serving {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .card-description {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: var(--space-6);
+    padding-top: var(--space-2);
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .meta-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+  }
+
+  .meta-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tag {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: opacity var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .tag:hover {
+    color: var(--color-text-secondary);
+    border-color: var(--color-border-hover);
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-2);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: gap var(--transition-base) var(--ease-out-expo);
+  }
+
+  .card-link:hover {
+    gap: var(--space-3);
+  }
+</style>

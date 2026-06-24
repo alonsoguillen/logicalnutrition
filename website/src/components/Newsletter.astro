@@ -1,0 +1,92 @@
+---
+interface Props {
+  light?: boolean;
+}
+
+const { light = false } = Astro.props;
+---
+
+<div class={`newsletter ${light ? 'newsletter--light' : ''}`}>
+  <h3 class="newsletter-title">Recibe ciencia, no spam.</h3>
+  <p class="newsletter-text">
+    Guías de suplementación, lanzamientos y análisis de nuevos estudios directamente en tu bandeja.
+  </p>
+  <form class="newsletter-form" action="#" method="post" onsubmit="event.preventDefault();">
+    <label for="newsletter-email" class="visually-hidden">Correo electrónico</label>
+    <input
+      id="newsletter-email"
+      type="email"
+      name="email"
+      class="newsletter-input input"
+      placeholder="tu@email.com"
+      required
+    />
+    <button type="submit" class="newsletter-btn btn btn-accent">Suscribirse</button>
+  </form>
+  <p class="newsletter-note">Sin compromiso. Puedes darte de baja cuando quieras.</p>
+</div>
+
+<style>
+  .newsletter {
+    max-width: 480px;
+  }
+
+  .newsletter-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+    color: var(--color-text);
+  }
+
+  .newsletter-text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    line-height: 1.7;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .newsletter-input {
+    flex: 1;
+  }
+
+  .newsletter-btn {
+    flex-shrink: 0;
+  }
+
+  .newsletter-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .newsletter--light .newsletter-title {
+    color: var(--color-light-text);
+  }
+
+  .newsletter--light .newsletter-text {
+    color: var(--color-light-text-secondary);
+  }
+
+  .newsletter--light .newsletter-input {
+    border-color: var(--color-light-border);
+    color: var(--color-light-text);
+  }
+
+  .newsletter--light .newsletter-input::placeholder {
+    color: var(--color-light-text-muted);
+  }
+
+  .newsletter--light .newsletter-note {
+    color: var(--color-light-text-muted);
+  }
+
+  @media (max-width: 480px) {
+    .newsletter-form {
+      flex-direction: column;
+    }
+  }
+</style>

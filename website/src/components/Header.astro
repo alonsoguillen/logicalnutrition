@@ -1,0 +1,57 @@
+---
+import Logo from './Logo.astro';
+import Menu from './Menu.astro';
+---
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <Logo />
+    <Menu />
+  </div>
+</header>
+
+<script>
+  (function () {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    function onScroll() {
+      if (window.scrollY > 24) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: var(--space-6) var(--space-8);
+    transition: background-color var(--transition-base), border-color var(--transition-base), padding var(--transition-base);
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-header.is-scrolled {
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: var(--color-border);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>

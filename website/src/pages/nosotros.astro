@@ -1,0 +1,129 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+import ProductMockup from '../components/ProductMockup.astro';
+---
+
+<PageShell
+  title="Nosotros | Logical Nutrition"
+  description="Conoce la historia y el compromiso de Logical Nutrition con la ciencia, la pureza y la transparencia."
+  label="Nosotros"
+  canonical="/nosotros"
+>
+  <div class="container container-narrow">
+    <div class="about-intro animate-on-scroll">
+      <p class="lead">
+        Logical Nutrition nació de una frustración compartida: la industria de los suplementos está llena de promesas imposibles, mezclas ocultas y marketing que confunde más que informa.
+      </p>
+      <p>
+        Creemos que la suplementación efectiva no requiere magia. Requiere compuestos puros, dosis respaldadas por evidencia y transparencia total sobre lo que consumes.
+      </p>
+    </div>
+
+    <div class="about-values">
+      <div class="value-card animate-on-scroll stagger-1">
+        <span class="value-number">01</span>
+        <h2>Single-ingredient</h2>
+        <p>Cada producto contiene un solo ingrediente activo. Así sabes exactamente qué estás tomando y por qué.</p>
+      </div>
+      <div class="value-card animate-on-scroll stagger-2">
+        <span class="value-number">02</span>
+        <h2>Dosis efectivas</h2>
+        <p>No vendemos polvo placebo. Las dosis siguen los rangos validados en literatura científica con humanos.</p>
+      </div>
+      <div class="value-card animate-on-scroll stagger-3">
+        <span class="value-number">03</span>
+        <h2>Testeo independiente</h2>
+        <p>Cada lote pasa por análisis de identidad, pureza y seguridad microbiológica antes de llegar a tus manos.</p>
+      </div>
+    </div>
+
+    <div class="about-visual animate-on-scroll">
+      <ProductMockup name="Logical" />
+    </div>
+
+    <div class="about-closing animate-on-scroll">
+      <h2>Hecho para quienes exigen evidencia.</h2>
+      <p>
+        Ya seas atleta, entrenador, nutricionista o simplemente alguien que quiere optimizar su salud sin caer en modas pasajeras, Logical Nutrition está diseñado para acompañar tu progreso con honestidad científica.
+      </p>
+    </div>
+  </div>
+</PageShell>
+
+<style>
+  .about-intro {
+    margin-bottom: var(--space-16);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: var(--space-5);
+  }
+
+  .about-intro p:not(.lead) {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .about-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-16);
+  }
+
+  @media (max-width: 768px) {
+    .about-values {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-8);
+  }
+
+  .value-number {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-5);
+  }
+
+  .value-card h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+
+  .value-card p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  .about-visual {
+    max-width: 280px;
+    margin: 0 auto var(--space-16);
+  }
+
+  .about-closing {
+    text-align: center;
+  }
+
+  .about-closing h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    margin-bottom: var(--space-4);
+  }
+
+  .about-closing p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin: 0 auto;
+  }
+</style>

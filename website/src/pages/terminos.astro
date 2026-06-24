@@ -1,0 +1,61 @@
+---
+import PageShell from '../layouts/PageShell.astro';
+---
+
+<PageShell
+  title="Términos y condiciones | Logical Nutrition"
+  description="Términos y condiciones de uso del sitio web de Logical Nutrition."
+  label="Legal"
+  canonical="/terminos"
+>
+  <div class="container container-narrow">
+    <div class="content-block animate-on-scroll">
+      <h2>1. Uso del sitio</h2>
+      <p>
+        Al acceder a logicalnutrition.com aceptas estos términos. El contenido del sitio tiene fines informativos y comerciales. No sustituye el consejo médico, nutricional ni profesional.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-1">
+      <h2>2. Productos</h2>
+      <p>
+        Los productos son suplementos alimentarios. La información publicada se basa en literatura científica disponible y no constituye una promesa de resultados específicos. Consulta a un profesional de la salud antes de comenzar cualquier suplementación.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-2">
+      <h2>3. Precios y pagos</h2>
+      <p>
+        Los precios están expresados en soles peruanos (PEN) e incluyen IGV salvo que se indique lo contrario. Los pagos se gestionan por los medios informados en el momento de la compra.
+      </p>
+    </div>
+
+    <div class="content-block animate-on-scroll stagger-3">
+      <h2>4. Cambios y devoluciones</h2>
+      <p>
+        Aceptamos devoluciones por productos defectuosos, dañados o incorrectos dentro de los 7 días posteriores a la recepción. El cliente debe contactarnos por WhatsApp o email para coordinar el proceso.
+      </p>
+    </div>
+  </div>
+</PageShell>
+
+<style>
+  .container-narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .content-block {
+    margin-bottom: var(--space-10);
+  }
+
+  .content-block h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: var(--space-4);
+  }
+
+  .content-block p {
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+</style>

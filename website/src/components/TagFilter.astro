@@ -1,0 +1,50 @@
+---
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<div class="tag-filter">
+  <button class="tag-filter-btn is-active" data-tag="all">
+    <span>Todos</span>
+  </button>
+  {tags.map((tag) => (
+    <button class="tag-filter-btn" data-tag={tag}>
+      <span>{tag}</span>
+    </button>
+  ))}
+</div>
+
+<style>
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tag-filter-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.8125rem;
+    font-family: inherit;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-base) var(--ease-out-expo);
+  }
+
+  .tag-filter-btn:hover {
+    border-color: var(--color-border-hover);
+    color: var(--color-text-secondary);
+  }
+
+  .tag-filter-btn.is-active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-dim);
+  }
+</style>
