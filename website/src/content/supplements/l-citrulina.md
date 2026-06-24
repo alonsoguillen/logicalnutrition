@@ -13,7 +13,7 @@ order: 2
 flavor: "Sin sabor"
 ingredients: "100% L-Citrulina libre (forma base)."
 allergens: "Sin gluten, sin lácteos, sin soya."
-warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en periodo de lactancia o tienes una condición médica."
+warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en período de lactancia o tienes una condición médica."
 benefits:
   - "Vasodilatación y flujo sanguíneo mejorado"
   - "Bombeo muscular sostenido"
@@ -22,7 +22,7 @@ benefits:
   - "Mejora de la entrega de oxígeno y nutrientes al músculo"
   - "Posible reducción de la rigidez muscular post-entrenamiento"
 howToUse: "Tomar 6g 30-45 minutos antes del entrenamiento con agua fría. Puede combinarse con creatina monohidratada."
-scienceSummary: "La L-Citrulina es un aminoácido no proteico que bypassa el metabolismo hepático y se convierte en arginina a nivel renal, elevando los niveles plasmáticos de óxido nítrico de forma más eficiente que la arginina oral."
+scienceSummary: "La L-Citrulina es un aminoácido no proteico que evita el metabolismo hepático y se convierte en arginina a nivel renal, elevando los niveles plasmáticos de óxido nítrico de forma más eficiente que la arginina oral."
 studies:
   - title: "Citrulline malate enhances athletic anaerobic performance and relieves muscle soreness"
     journal: "Journal of Strength and Conditioning Research"
@@ -49,7 +49,7 @@ faqs:
 
 ## La ciencia detrás de la L-Citrulina
 
-La L-Citrulina es un aminoácido no proteico que desempeña un papel fundamental en el ciclo de la urea y en la producción de óxido nítrico endógeno. A diferencia de la L-arginina, la L-Citrulina bypassea el metabolismo hepático y se convierte directamente en arginina a nivel renal, logrando mayores niveles plasmáticos de óxido nítrico.
+La L-Citrulina es un aminoácido no proteico que desempeña un papel fundamental en el ciclo de la urea y en la producción de óxido nítrico endógeno. A diferencia de la L-arginina, la L-Citrulina evita el metabolismo hepático y se convierte directamente en arginina a nivel renal, logrando mayores niveles plasmáticos de óxido nítrico.
 
 ### Beneficios comprobados
 

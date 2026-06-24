@@ -14,7 +14,7 @@ order: 1
 flavor: "Sin sabor"
 ingredients: "100% creatina monohidratada micronizada."
 allergens: "Sin gluten, sin lácteos, sin soya."
-warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en periodo de lactancia o tienes una condición médica."
+warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en período de lactancia o tienes una condición médica."
 benefits:
   - "Aumento medible de fuerza y potencia"
   - "Mayor capacidad de recuperación entre sesiones"
@@ -63,7 +63,7 @@ La creatina monohidratada es el suplemento deportivo más estudiado en la histor
 
 - **Pureza garantizada**: 100% creatina monohidratada, sin aditivos ni rellenos.
 - **Micronización superior**: Mayor solubilidad y absorción que las creatinas estándar.
-- **Testada en laboratorio**: Cada lote pasa por análisis de pureza microbiológica.
+- **Testeada en laboratorio**: Cada lote pasa por análisis de pureza microbiológica.
 
 ### Modo de uso
 
