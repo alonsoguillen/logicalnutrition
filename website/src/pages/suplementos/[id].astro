@@ -97,7 +97,7 @@ const productSchema = {
       <article class="product-hero">
         <div class="container product-hero-grid">
           <div class="product-visual animate-on-scroll">
-            <ProductMockup name={title} />
+            <ProductMockup name={supplement.data.mockupLabel || title} />
           </div>
 
           <div class="product-info">
@@ -462,8 +462,20 @@ const productSchema = {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-4);
+  }
+
+  @media (max-width: 900px) {
+    .benefits-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .benefits-list {
+      grid-template-columns: 1fr;
+    }
   }
 
   .benefit-item {

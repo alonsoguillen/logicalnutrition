@@ -5,6 +5,7 @@ const supplements = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/supplements' }),
   schema: z.object({
     title: z.string(),
+    mockupLabel: z.string().optional(),
     description: z.string(),
     shortDescription: z.string().optional(),
     tags: z.array(z.string()),

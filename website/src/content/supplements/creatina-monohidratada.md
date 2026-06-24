@@ -1,5 +1,6 @@
 ---
 title: "Creatina Monohidratada"
+mockupLabel: "Creatina"
 description: "Creatina monohidratada pura al 100%. El suplemento deportivo con mayor respaldo científico del mundo. Potencia tu fuerza, tu rendimiento y tu recuperación."
 shortDescription: "Pura creatina monohidratada micronizada. Más de 1,000 estudios respaldan su eficacia."
 tags: ["fuerza", "rendimiento", "recuperación", "pureza"]
@@ -19,16 +20,27 @@ benefits:
   - "Mayor capacidad de recuperación entre sesiones"
   - "Soporte cognitivo documentado"
   - "Sin estimulantes ni aditivos"
+  - "Mejora del rendimiento en sprints y deportes de alta intensidad"
+  - "Perfil de seguridad respaldado por décadas de investigación"
 howToUse: "Tomar 5g al día con agua o jugo. Puede consumirse en cualquier momento del día. No requiere fase de carga."
 scienceSummary: "La creatina monohidratada es el suplemento deportivo más estudiado en la historia de la nutrición. Aumenta los depósitos de fosfocreatina muscular, lo que mejora la regeneración de ATP durante ejercicios de alta intensidad."
 studies:
-  - title: "International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation"
+  - title: "International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine"
     journal: "Journal of the International Society of Sports Nutrition"
     year: 2017
     url: "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0173-z"
-  - title: "Creatine supplementation and upper limb strength performance"
-    journal: "Journal of Strength and Conditioning Research"
+  - title: "Effect of creatine supplementation on body composition and performance: a meta-analysis"
+    journal: "International Journal of Sport Nutrition and Exercise Metabolism"
+    year: 2003
+    url: "https://pubmed.ncbi.nlm.nih.gov/12945830/"
+  - title: "Creatine supplementation and lower limb strength performance: a systematic review and meta-analyses"
+    journal: "Sports Medicine"
     year: 2015
+    url: "https://pubmed.ncbi.nlm.nih.gov/25627918/"
+  - title: "Effects of creatine supplementation on cognitive function of healthy individuals and older adults: a systematic review and meta-analysis"
+    journal: "Nutrients"
+    year: 2018
+    url: "https://pubmed.ncbi.nlm.nih.gov/30544985/"
 faqs:
   - question: "¿La creatina causa retención de líquidos?"
     answer: "Puede aumentar ligeramente el agua intracelular dentro del músculo, lo cual es un efecto deseado asociado a mayores ganancias de fuerza. No causa retención subcutánea significativa."

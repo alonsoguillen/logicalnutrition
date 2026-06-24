@@ -19,15 +19,27 @@ benefits:
   - "Bombeo muscular sostenido"
   - "Reducción de la sensación de fatiga"
   - "Sin estimulantes ni taquicardia"
+  - "Mejora de la entrega de oxígeno y nutrientes al músculo"
+  - "Posible reducción de la rigidez muscular post-entrenamiento"
 howToUse: "Tomar 6g 30-45 minutos antes del entrenamiento con agua fría. Puede combinarse con creatina monohidratada."
 scienceSummary: "La L-Citrulina es un aminoácido no proteico que bypassa el metabolismo hepático y se convierte en arginina a nivel renal, elevando los niveles plasmáticos de óxido nítrico de forma más eficiente que la arginina oral."
 studies:
   - title: "Citrulline malate enhances athletic anaerobic performance and relieves muscle soreness"
     journal: "Journal of Strength and Conditioning Research"
     year: 2010
-  - title: "L-citrulline supplementation improves O2 uptake kinetics and exercise tolerance"
+    url: "https://pubmed.ncbi.nlm.nih.gov/20386132/"
+  - title: "l-Citrulline supplementation improves O2 uptake kinetics and high-intensity exercise performance in humans"
     journal: "Journal of Applied Physiology"
-    year: 2017
+    year: 2015
+    url: "https://pubmed.ncbi.nlm.nih.gov/26333756/"
+  - title: "Oral L-citrulline supplementation enhances cycling time trial performance in healthy trained men: Double-blind randomized placebo-controlled 2-way crossover study"
+    journal: "Journal of the International Society of Sports Nutrition"
+    year: 2016
+    url: "https://pubmed.ncbi.nlm.nih.gov/28069061/"
+  - title: "The effect of L-citrulline supplementation on nitric oxide and exercise performance: A narrative review and meta-analysis"
+    journal: "International Journal of Sports Physiology and Performance"
+    year: 2023
+    url: "https://pubmed.ncbi.nlm.nih.gov/36735746/"
 faqs:
   - question: "¿Puedo combinarla con creatina?"
     answer: "Sí. La L-Citrulina y la creatina tienen mecanismos complementarios y se pueden tomar juntas antes del entrenamiento."

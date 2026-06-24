@@ -151,7 +151,7 @@ const websiteSchema = {
             {featuredSupplements.map((supplement, index) => (
               <a href={`/suplementos/${supplement.id}`} class="featured-card animate-on-scroll stagger-${index + 1}">
                 <div class="featured-card-visual">
-                  <ProductMockup name={supplement.data.title} />
+                  <ProductMockup name={supplement.data.mockupLabel || supplement.data.title} />
                 </div>
                 <div class="featured-card-content">
                   <h3 class="featured-card-title">{supplement.data.title}</h3>
