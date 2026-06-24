@@ -1,20 +1,19 @@
 ---
+import { getWhatsAppUrl, WHATSAPP_MESSAGE } from '../data/contact';
+
 interface Props {
   product?: string;
   class?: string;
-  children?: any;
   variant?: 'button' | 'link';
 }
 
-const WHATSAPP_NUMBER = '56912345678';
-
 const { product, class: className = '', variant = 'link' } = Astro.props;
 
-const baseMessage = product
+const message = product
   ? `Hola, quiero consultar por ${product} de Logical Nutrition.`
-  : 'Hola, quiero consultar por los suplementos de Logical Nutrition.';
+  : WHATSAPP_MESSAGE;
 
-const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(baseMessage)}`;
+const whatsappUrl = getWhatsAppUrl(message);
 ---
 
 <a

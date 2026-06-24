@@ -1,7 +1,7 @@
 ---
-const WHATSAPP_NUMBER = '56912345678';
-const WHATSAPP_MESSAGE = encodeURIComponent('Hola, quiero consultar por los suplementos de Logical Nutrition.');
-const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+import { getWhatsAppUrl } from '../data/contact';
+
+const whatsappUrl = getWhatsAppUrl();
 ---
 
 <a

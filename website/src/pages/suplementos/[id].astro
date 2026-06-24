@@ -7,6 +7,7 @@ import ProductMockup from '../../components/ProductMockup.astro';
 import Badge from '../../components/Badge.astro';
 import FAQ from '../../components/FAQ.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { getWhatsAppUrl } from '../../data/contact';
 import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -58,8 +59,7 @@ const perServing = price && servingsPerContainer
 const allSupplements = await getCollection('supplements');
 const relatedProducts = allSupplements.filter((s) => related.includes(s.id) && s.id !== supplement.id);
 
-const whatsappMessage = encodeURIComponent(`Hola, quiero comprar ${title} de Logical Nutrition.`);
-const whatsappUrl = `https://wa.me/56912345678?text=${whatsappMessage}`;
+const whatsappUrl = getWhatsAppUrl(`Hola, quiero comprar ${title} de Logical Nutrition.`);
 
 const productSchema = {
   '@context': 'https://schema.org',
@@ -150,7 +150,7 @@ const productSchema = {
             <div class="product-trust animate-on-scroll stagger-4">
               <span class="trust-item">✓ Testado en laboratorio</span>
               <span class="trust-item">✓ Sin aditivos</span>
-              <span class="trust-item">✓ Envío a todo Chile</span>
+              <span class="trust-item">✓ Envío a todo el Perú</span>
             </div>
           </div>
         </div>

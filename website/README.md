@@ -125,13 +125,13 @@ Required fields: `title`, `description`, `tags`.
 
 ## WhatsApp Number
 
-Edit the number in `src/components/WhatsAppButton.astro` and `src/components/WhatsAppLink.astro`:
+Edit the number in `src/data/contact.ts`:
 
-```astro
-const WHATSAPP_NUMBER = '56912345678';
+```ts
+export const WHATSAPP_NUMBER = '51912345678';
 ```
 
-Use the full international format without `+`, spaces, or dashes.
+Use the full international format without `+`, spaces, or dashes. The number is used everywhere via `getWhatsAppUrl()`.
 
 ## OG / Social Images
 

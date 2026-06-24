@@ -1,5 +1,8 @@
 ---
 import PageShell from '../layouts/PageShell.astro';
+import { getWhatsAppUrl } from '../data/contact';
+
+const whatsappUrl = getWhatsAppUrl();
 ---
 
 <PageShell
@@ -14,7 +17,7 @@ import PageShell from '../layouts/PageShell.astro';
     </div>
 
     <div class="contact-grid">
-      <a href="https://wa.me/56912345678?text=Hola%2C%20quiero%20consultar%20por%20los%20suplementos%20de%20Logical%20Nutrition." target="_blank" rel="noopener noreferrer" class="contact-card animate-on-scroll stagger-1">
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-card animate-on-scroll stagger-1">
         <span class="contact-icon" aria-hidden="true">💬</span>
         <h2>WhatsApp</h2>
         <p>Respuesta rápida para pedidos, dudas y asesoría personalizada.</p>
