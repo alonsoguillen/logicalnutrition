@@ -144,9 +144,17 @@ const productSchema = {
 
             <div class="product-meta animate-on-scroll stagger-2">
               {displayPrice && (
-                <div class="product-price-block">
-                  <span class="product-price">{displayPrice}</span>
+                <div class="product-price-block" data-role="price-block">
+                  <div class="product-price-row">
+                    <span class="product-price product-price--active" data-role="one-time-price">{displayPrice}</span>
+                    {subscriptionDisplayPrice && (
+                      <span class="product-price product-price--inactive" data-role="subscription-price">{subscriptionDisplayPrice}</span>
+                    )}
+                  </div>
                   {perServing && <span class="product-per-serving">{perServing} por servicio</span>}
+                  {subscriptionDiscount > 0 && subscriptionDisplayPrice && (
+                    <span class="product-save-badge">Ahorra {subscriptionDiscount}% con suscripción</span>
+                  )}
                 </div>
               )}
 
@@ -212,7 +220,24 @@ const productSchema = {
                   const selector = document.querySelector('[data-role="plan-selector"]');
                   const btn = document.querySelector('[data-role="buy-btn"]');
                   const label = document.querySelector('[data-role="buy-label"]');
+                  const oneTimePrice = document.querySelector('[data-role="one-time-price"]');
+                  const subscriptionPrice = document.querySelector('[data-role="subscription-price"]');
                   if (!selector || !btn) return;
+
+                  function setActivePrice(plan) {
+                    if (!oneTimePrice || !subscriptionPrice) return;
+                    if (plan === 'subscription') {
+                      oneTimePrice.classList.remove('product-price--active');
+                      oneTimePrice.classList.add('product-price--inactive');
+                      subscriptionPrice.classList.remove('product-price--inactive');
+                      subscriptionPrice.classList.add('product-price--active');
+                    } else {
+                      subscriptionPrice.classList.remove('product-price--active');
+                      subscriptionPrice.classList.add('product-price--inactive');
+                      oneTimePrice.classList.remove('product-price--inactive');
+                      oneTimePrice.classList.add('product-price--active');
+                    }
+                  }
 
                   selector.addEventListener('click', (e) => {
                     const option = e.target.closest('.plan-option');
@@ -223,6 +248,7 @@ const productSchema = {
 
                     const plan = option.dataset.plan;
                     btn.href = btn.dataset[plan];
+                    setActivePrice(plan);
                     if (label) {
                       label.textContent = plan === 'subscription' ? 'Suscribirme por WhatsApp' : 'Comprar por WhatsApp';
                     }
@@ -547,19 +573,51 @@ const productSchema = {
   .product-price-block {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: var(--space-2);
+  }
+
+  .product-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
   }
 
   .product-price {
     font-size: 2rem;
     font-weight: 500;
     letter-spacing: -0.02em;
+    transition: color var(--transition-base), opacity var(--transition-base);
+  }
+
+  .product-price--active {
     color: var(--color-text);
+  }
+
+  .product-price--inactive {
+    font-size: 1.35rem;
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+    opacity: 0.7;
   }
 
   .product-per-serving {
     font-size: 0.875rem;
     color: var(--color-text-muted);
+  }
+
+  .product-save-badge {
+    display: inline-block;
+    width: fit-content;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-accent-dim);
+    color: var(--color-accent);
+    border: 1px solid rgba(212, 184, 140, 0.25);
+    border-radius: 999px;
   }
 
   .product-specs {
