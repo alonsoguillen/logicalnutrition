@@ -17,6 +17,7 @@ const supplements = defineCollection({
     featured: z.boolean().default(false),
     order: z.number().default(0),
     flavor: z.string().optional(),
+    subscriptionDiscount: z.number().optional(),
     ingredients: z.string().optional(),
     allergens: z.string().optional(),
     warnings: z.string().optional(),

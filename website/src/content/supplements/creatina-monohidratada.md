@@ -12,6 +12,7 @@ servingsPerContainer: 60
 featured: true
 order: 1
 flavor: "Sin sabor"
+subscriptionDiscount: 20
 ingredients: "100% creatina monohidratada micronizada."
 allergens: "Sin gluten, sin lácteos, sin soya."
 warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en período de lactancia o tienes una condición médica."

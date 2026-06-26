@@ -11,6 +11,7 @@ servingsPerContainer: 50
 featured: true
 order: 2
 flavor: "Sin sabor"
+subscriptionDiscount: 20
 ingredients: "100% L-Citrulina libre (forma base)."
 allergens: "Sin gluten, sin lácteos, sin soya."
 warnings: "Consulta a un profesional de la salud antes de usar si estás embarazada, en período de lactancia o tienes una condición médica."

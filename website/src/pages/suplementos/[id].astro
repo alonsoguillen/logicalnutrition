@@ -7,7 +7,15 @@ import ProductMockup from '../../components/ProductMockup.astro';
 import Badge from '../../components/Badge.astro';
 import FAQ from '../../components/FAQ.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
-import { getWhatsAppUrl } from '../../data/contact';
+import { getWhatsAppUrl, getWhatsAppOrderUrl, getWhatsAppBundleUrl } from '../../data/contact';
+import {
+  getBundleForProduct,
+  resolveBundleProducts,
+  getBundlePrice,
+  formatPrice,
+} from '../../data/bundles';
+import { getTestimonialsForProduct } from '../../data/testimonials';
+import { getComparisonForProduct } from '../../data/comparisons';
 import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -58,6 +66,33 @@ const perServing = price && servingsPerContainer
 
 const allSupplements = await getCollection('supplements');
 const relatedProducts = allSupplements.filter((s) => related.includes(s.id) && s.id !== supplement.id);
+
+const subscriptionDiscount = supplement.data.subscriptionDiscount || 0;
+const subscriptionPrice =
+  price && subscriptionDiscount ? price * (1 - subscriptionDiscount / 100) : null;
+const subscriptionDisplayPrice =
+  subscriptionPrice !== null ? formatPrice(subscriptionPrice, currency || 'PEN') : null;
+
+const oneTimeUrl = getWhatsAppOrderUrl(title, { subscription: false });
+const subscriptionUrl = getWhatsAppOrderUrl(title, {
+  subscription: true,
+  discountPercent: subscriptionDiscount || undefined,
+});
+
+const productBundle = await getBundleForProduct(supplement.id);
+const bundleProducts = productBundle ? await resolveBundleProducts(productBundle) : [];
+const bundlePrice = productBundle ? getBundlePrice(productBundle, bundleProducts) : null;
+const bundleUrl =
+  productBundle && bundlePrice
+    ? getWhatsAppBundleUrl(
+        productBundle.title,
+        bundleProducts.map((p) => p.data.title),
+        formatPrice(bundlePrice.discounted, currency || 'PEN')
+      )
+    : null;
+
+const productTestimonials = getTestimonialsForProduct(supplement.id);
+const productComparison = getComparisonForProduct(supplement.id);
 
 const whatsappUrl = getWhatsAppUrl(`Hola, quiero comprar ${title} de Logical Nutrition.`);
 
@@ -138,13 +173,62 @@ const productSchema = {
             </div>
 
             <div class="product-actions animate-on-scroll stagger-3">
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-large">
-                <span>Comprar por WhatsApp</span>
+              {subscriptionDiscount > 0 && (
+                <div class="plan-selector" data-role="plan-selector">
+                  <button type="button" class="plan-option is-active" data-plan="one-time">
+                    Compra única
+                  </button>
+                  <button type="button" class="plan-option" data-plan="subscription">
+                    Suscripción mensual
+                    <span class="plan-discount">-{subscriptionDiscount}%</span>
+                  </button>
+                </div>
+              )}
+
+              <a
+                href={oneTimeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-accent btn-large"
+                data-role="buy-btn"
+                data-one-time={oneTimeUrl}
+                data-subscription={subscriptionUrl}
+              >
+                <span data-role="buy-label">Comprar por WhatsApp</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </a>
               <a href="#detalles" class="btn btn-outline">Ver detalles</a>
+
+              {subscriptionDiscount > 0 && subscriptionDisplayPrice && (
+                <p class="plan-note">
+                  Suscripción: <strong>{subscriptionDisplayPrice}</strong>/mes. Pausa o cancela cuando quieras.
+                </p>
+              )}
+
+              <script is:inline>
+                (function () {
+                  const selector = document.querySelector('[data-role="plan-selector"]');
+                  const btn = document.querySelector('[data-role="buy-btn"]');
+                  const label = document.querySelector('[data-role="buy-label"]');
+                  if (!selector || !btn) return;
+
+                  selector.addEventListener('click', (e) => {
+                    const option = e.target.closest('.plan-option');
+                    if (!option) return;
+
+                    selector.querySelectorAll('.plan-option').forEach((el) => el.classList.remove('is-active'));
+                    option.classList.add('is-active');
+
+                    const plan = option.dataset.plan;
+                    btn.href = btn.dataset[plan];
+                    if (label) {
+                      label.textContent = plan === 'subscription' ? 'Suscribirme por WhatsApp' : 'Comprar por WhatsApp';
+                    }
+                  });
+                })();
+              </script>
             </div>
 
             <div class="product-trust animate-on-scroll stagger-4">
@@ -269,6 +353,108 @@ const productSchema = {
           <div class="container container-narrow">
             <h2 class="details-heading details-heading--center">Preguntas frecuentes</h2>
             <FAQ items={faqs} />
+          </div>
+        </section>
+      )}
+
+      {productComparison && (
+        <section class="product-comparison section">
+          <div class="container container-narrow">
+            <h2 class="details-heading details-heading--center">{title} vs. suplementos genéricos</h2>
+            <div class="comparison-table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Característica</th>
+                    <th class="comparison-brand">Logical Nutrition</th>
+                    <th>Suplemento genérico</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productComparison.rows.map((row) => (
+                    <tr>
+                      <td class="comparison-label">{row.label}</td>
+                      <td class="comparison-logical">{row.logical}</td>
+                      <td class="comparison-generic">{row.generic}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {productBundle && bundlePrice && bundleUrl && (
+        <section class="product-bundle section">
+          <div class="container container-narrow">
+            <div class="bundle-card">
+              <div class="bundle-content">
+                {productBundle.badge && <span class="bundle-badge">{productBundle.badge}</span>}
+                <h2 class="bundle-title">{productBundle.title}</h2>
+                <p class="bundle-description">{productBundle.description}</p>
+                <ul class="bundle-items">
+                  {bundleProducts.map((p) => (
+                    <li>{p.data.title}</li>
+                  ))}
+                </ul>
+                <div class="bundle-price">
+                  <span class="bundle-price-total">
+                    {formatPrice(bundlePrice.total, currency || 'PEN')}
+                  </span>
+                  <span class="bundle-price-discounted">
+                    {formatPrice(bundlePrice.discounted, currency || 'PEN')}
+                  </span>
+                </div>
+                <a
+                  href={bundleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-accent btn-large"
+                >
+                  <span>Comprar stack por WhatsApp</span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {productTestimonials.length > 0 && (
+        <section class="product-testimonials section">
+          <div class="container container-narrow">
+            <h2 class="details-heading details-heading--center">Lo que dicen nuestros clientes</h2>
+            <div class="testimonials-grid">
+              {productTestimonials.map((t) => (
+                <article class="testimonial-card">
+                  <div class="testimonial-stars" aria-label={`${t.rating} de 5 estrellas`}>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg
+                        class={`star ${i < t.rating ? 'star--filled' : ''}`}
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <blockquote class="testimonial-quote">“{t.quote}”</blockquote>
+                  <footer class="testimonial-footer">
+                    <div class="testimonial-author-row">
+                      <span class="testimonial-author">{t.author}</span>
+                      {t.verified && <span class="verified-badge">Verified buyer</span>}
+                    </div>
+                    {t.role && <span class="testimonial-role">{t.role}</span>}
+                  </footer>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -672,5 +858,254 @@ const productSchema = {
     font-weight: 500;
     letter-spacing: 0.05em;
     color: var(--color-accent);
+  }
+
+  /* Plan selector */
+  .plan-selector {
+    display: inline-flex;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .plan-option {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background var(--transition-base), color var(--transition-base);
+  }
+
+  .plan-option.is-active {
+    background: var(--color-accent-dim);
+    color: var(--color-accent);
+  }
+
+  .plan-discount {
+    display: inline-block;
+    margin-left: var(--space-1);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #050505;
+  }
+
+  .plan-note {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Comparison table */
+  .comparison-table-wrapper {
+    margin-top: var(--space-10);
+    border: 1px solid var(--color-border);
+    overflow-x: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .comparison-table th {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: var(--color-surface-elevated);
+  }
+
+  .comparison-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-brand {
+    color: var(--color-accent);
+  }
+
+  .comparison-logical {
+    color: var(--color-text);
+  }
+
+  .comparison-generic {
+    color: var(--color-text-muted);
+  }
+
+  /* Bundle card */
+  .bundle-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-10);
+    text-align: center;
+  }
+
+  .bundle-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-accent);
+    color: #050505;
+    margin-bottom: var(--space-4);
+  }
+
+  .bundle-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: var(--space-3);
+  }
+
+  .bundle-description {
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    margin: 0 auto var(--space-5);
+  }
+
+  .bundle-items {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
+
+  .bundle-items li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .bundle-items li::before {
+    content: '+';
+    color: var(--color-accent);
+  }
+
+  .bundle-items li:first-child::before {
+    content: none;
+  }
+
+  .bundle-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .bundle-price-total {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+  }
+
+  .bundle-price-discounted {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+
+  /* Product testimonials */
+  .product-testimonials .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+    margin-top: var(--space-10);
+  }
+
+  @media (max-width: 768px) {
+    .product-testimonials .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .product-testimonials .testimonial-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .product-testimonials .testimonial-stars {
+    display: flex;
+    gap: var(--space-1);
+  }
+
+  .product-testimonials .star {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .product-testimonials .star--filled {
+    color: var(--color-accent);
+  }
+
+  .product-testimonials .testimonial-quote {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--color-text);
+    margin: 0;
+    border: none;
+    padding: 0;
+  }
+
+  .product-testimonials .testimonial-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .product-testimonials .testimonial-author-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .product-testimonials .testimonial-author {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .product-testimonials .testimonial-role {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .verified-badge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    border-radius: 999px;
   }
 </style>

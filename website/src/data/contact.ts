@@ -9,3 +9,16 @@ export function getWhatsAppUrl(message?: string): string {
   const text = encodeURIComponent(message || WHATSAPP_MESSAGE);
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
 }
+
+export function getWhatsAppOrderUrl(productTitle: string, options?: { subscription?: boolean; discountPercent?: number }): string {
+  const plan = options?.subscription ? 'suscripción mensual' : 'compra única';
+  const discount = options?.subscription && options.discountPercent
+    ? ` con el ${options.discountPercent}% de descuento de suscripción`
+    : '';
+  return getWhatsAppUrl(`Hola, quiero ordenar ${productTitle} (${plan}${discount}) de Logical Nutrition.`);
+}
+
+export function getWhatsAppBundleUrl(bundleTitle: string, items: string[], totalPrice: string): string {
+  const list = items.join(' + ');
+  return getWhatsAppUrl(`Hola, quiero ordenar el ${bundleTitle} (${list}) por ${totalPrice} de Logical Nutrition.`);
+}
