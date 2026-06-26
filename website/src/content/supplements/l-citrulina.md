@@ -10,7 +10,7 @@ servingSize: "6g"
 servingsPerContainer: 50
 featured: true
 order: 2
-flavor: "Sin sabor"
+flavor: "Neutro"
 subscriptionDiscount: 20
 ingredients: "100% L-Citrulina libre (forma base)."
 allergens: "Sin gluten, sin lácteos, sin soya."

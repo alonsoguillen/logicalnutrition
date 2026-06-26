@@ -11,7 +11,7 @@ servingSize: "5g"
 servingsPerContainer: 60
 featured: true
 order: 1
-flavor: "Sin sabor"
+flavor: "Neutro"
 subscriptionDiscount: 20
 ingredients: "100% creatina monohidratada micronizada."
 allergens: "Sin gluten, sin lácteos, sin soya."
