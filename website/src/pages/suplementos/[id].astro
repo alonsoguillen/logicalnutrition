@@ -7,7 +7,6 @@ import ProductMockup from '../../components/ProductMockup.astro';
 import Badge from '../../components/Badge.astro';
 import FAQ from '../../components/FAQ.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
-import ProductHeroCanvas from '../../components/ProductHeroCanvas.astro';
 import { getWhatsAppUrl } from '../../data/contact';
 import type { CollectionEntry } from 'astro:content';
 
@@ -96,7 +95,6 @@ const productSchema = {
 
     <main>
       <article class="product-hero">
-        <ProductHeroCanvas variant={supplement.id === 'creatina-monohidratada' ? 'energy' : 'flow'} />
         <div class="container product-hero-grid">
           <div class="product-visual animate-on-scroll">
             <ProductMockup name={supplement.data.mockupLabel || title} />
@@ -307,17 +305,10 @@ const productSchema = {
   }
 
   .product-hero {
-    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
     padding: calc(var(--space-24) + var(--space-8)) 0 var(--space-16);
-    overflow: hidden;
-  }
-
-  .product-hero .container {
-    position: relative;
-    z-index: 1;
   }
 
   .product-hero-grid {
