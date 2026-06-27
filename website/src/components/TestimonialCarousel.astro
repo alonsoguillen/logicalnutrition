@@ -39,7 +39,7 @@ const { testimonials, title, subtitle, light = false } = Astro.props;
       </button>
 
       <div class="carousel-track" data-role="carousel-track">
-        {testimonials.map((t) => (
+        {[...testimonials, ...testimonials].map((t) => (
           <article class="testimonial-slide">
             <div class="testimonial-stars" aria-label={`${t.rating || 5} de 5 estrellas`}>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -94,46 +94,42 @@ const { testimonials, title, subtitle, light = false } = Astro.props;
           return slide ? slide.getBoundingClientRect().width + 20 : 360;
         };
 
-        const AUTO_SCROLL_MS = 5000;
-        let timer = null;
+        const SPEED = 0.5; // pixels per frame
+        let rafId = null;
+        let isPaused = false;
 
-        function scrollNext() {
-          const width = getSlideWidth();
-          const maxScroll = track.scrollWidth - track.clientWidth;
-          if (track.scrollLeft + width >= maxScroll - 4) {
-            track.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            track.scrollBy({ left: width, behavior: 'smooth' });
+        function step() {
+          if (!isPaused) {
+            track.scrollLeft += SPEED;
+            const half = track.scrollWidth / 2;
+            if (track.scrollLeft >= half) {
+              track.scrollLeft -= half;
+            }
           }
+          rafId = requestAnimationFrame(step);
         }
 
-        function startAutoScroll() {
-          stopAutoScroll();
-          timer = setInterval(scrollNext, AUTO_SCROLL_MS);
+        function pause() {
+          isPaused = true;
         }
 
-        function stopAutoScroll() {
-          if (timer) {
-            clearInterval(timer);
-            timer = null;
-          }
+        function resume() {
+          isPaused = false;
         }
 
         prev.addEventListener('click', () => {
           track.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
-          startAutoScroll();
         });
         next.addEventListener('click', () => {
-          scrollNext();
-          startAutoScroll();
+          track.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
         });
 
-        track.addEventListener('mouseenter', stopAutoScroll);
-        track.addEventListener('mouseleave', startAutoScroll);
-        track.addEventListener('touchstart', stopAutoScroll, { passive: true });
-        track.addEventListener('touchend', startAutoScroll, { passive: true });
+        track.addEventListener('mouseenter', pause);
+        track.addEventListener('mouseleave', resume);
+        track.addEventListener('touchstart', pause, { passive: true });
+        track.addEventListener('touchend', resume, { passive: true });
 
-        startAutoScroll();
+        step();
       });
     })();
   </script>
@@ -169,8 +165,6 @@ const { testimonials, title, subtitle, light = false } = Astro.props;
     display: flex;
     gap: var(--space-5);
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     padding: var(--space-2) 0;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -183,7 +177,6 @@ const { testimonials, title, subtitle, light = false } = Astro.props;
   .testimonial-slide {
     flex: 0 0 85%;
     max-width: 420px;
-    scroll-snap-align: start;
     border: 1px solid var(--color-border);
     background: var(--color-surface);
     padding: var(--space-8);
