@@ -9,35 +9,14 @@ import TestimonialCarousel from '../components/TestimonialCarousel.astro';
 import FAQ from '../components/FAQ.astro';
 import Newsletter from '../components/Newsletter.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { brandTestimonials } from '../data/testimonials';
 import HeroCanvas from '../components/HeroCanvas.astro';
 
 const supplements = await getCollection('supplements');
 supplements.sort((a, b) => a.data.order - b.data.order);
 const featuredSupplements = supplements.filter((s) => s.data.featured).slice(0, 3);
 
-const testimonials = [
-  {
-    quote: 'La creatina se disuelve perfectamente y noté diferencia en fuerza desde la tercera semana. Sin aromas artificiales ni sensación de pesadez.',
-    author: 'Diego R.',
-    role: 'Entrenador de fuerza',
-    rating: 5,
-    verified: true,
-  },
-  {
-    quote: 'Finalmente una marca que no me vende humo. Me encanta que todo esté respaldado por estudios y que la etiqueta sea tan clara.',
-    author: 'Valentina M.',
-    role: 'Nutricionista deportiva',
-    rating: 5,
-    verified: true,
-  },
-  {
-    quote: 'La L-Citrulina me da un bombeo limpio sin el crash de los pre-entrenos. Se nota la pureza en cada dosis.',
-    author: 'Andrés L.',
-    role: 'Atleta amateur',
-    rating: 5,
-    verified: true,
-  },
-];
+const testimonials = brandTestimonials;
 
 const homeFaqs = [
   {

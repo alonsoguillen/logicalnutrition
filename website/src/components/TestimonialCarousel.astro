@@ -94,12 +94,46 @@ const { testimonials, title, subtitle, light = false } = Astro.props;
           return slide ? slide.getBoundingClientRect().width + 20 : 360;
         };
 
+        const AUTO_SCROLL_MS = 5000;
+        let timer = null;
+
+        function scrollNext() {
+          const width = getSlideWidth();
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          if (track.scrollLeft + width >= maxScroll - 4) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            track.scrollBy({ left: width, behavior: 'smooth' });
+          }
+        }
+
+        function startAutoScroll() {
+          stopAutoScroll();
+          timer = setInterval(scrollNext, AUTO_SCROLL_MS);
+        }
+
+        function stopAutoScroll() {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        }
+
         prev.addEventListener('click', () => {
           track.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
+          startAutoScroll();
         });
         next.addEventListener('click', () => {
-          track.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
+          scrollNext();
+          startAutoScroll();
         });
+
+        track.addEventListener('mouseenter', stopAutoScroll);
+        track.addEventListener('mouseleave', startAutoScroll);
+        track.addEventListener('touchstart', stopAutoScroll, { passive: true });
+        track.addEventListener('touchend', startAutoScroll, { passive: true });
+
+        startAutoScroll();
       });
     })();
   </script>

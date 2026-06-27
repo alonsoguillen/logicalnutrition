@@ -125,6 +125,8 @@ export const productTestimonials: ProductTestimonial[] = [
   },
 ];
 
+export const brandTestimonials = productTestimonials.map(({ productId, ...rest }) => rest);
+
 export function getTestimonialsForProduct(productId: string) {
   return productTestimonials.filter((t) => t.productId === productId);
 }
