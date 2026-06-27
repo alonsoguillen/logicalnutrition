@@ -94,7 +94,11 @@ const navItems = [
     gap: 8px;
     z-index: 1001;
     padding: 0;
-    transition: transform var(--transition-base) var(--ease-out-expo);
+    transition: transform var(--transition-base) var(--ease-out-expo), top var(--transition-base);
+  }
+
+  :global(.site-header.is-scrolled) .menu-toggle {
+    top: var(--space-4);
   }
 
   @media (max-width: 768px) {
@@ -127,6 +131,8 @@ const navItems = [
   .menu-overlay {
     position: fixed;
     inset: 0;
+    min-height: 100dvh;
+    overflow-y: auto;
     background: rgba(0, 0, 0, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -134,6 +140,7 @@ const navItems = [
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 6rem var(--space-5);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s var(--ease-out-expo);
@@ -149,19 +156,29 @@ const navItems = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    margin: auto 0;
   }
 
   .menu-link {
     color: var(--color-text);
     text-decoration: none;
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.5rem, 7vw, 3.25rem);
     font-weight: 300;
     letter-spacing: 0.05em;
     position: relative;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo), letter-spacing 0.3s ease;
+  }
+
+  @media (max-width: 480px) {
+    .menu-link {
+      font-size: clamp(1.35rem, 8vw, 2.5rem);
+    }
+    .menu-nav {
+      gap: 1.25rem;
+    }
   }
 
   .menu-overlay.is-open .menu-link {
@@ -195,8 +212,8 @@ const navItems = [
   }
 
   .menu-footer {
-    position: absolute;
-    bottom: 3rem;
+    margin-top: auto;
+    padding-top: 3rem;
     opacity: 0;
     transition: opacity 0.6s ease 0.3s;
   }

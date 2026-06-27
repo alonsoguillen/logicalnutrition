@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import ProductMockup from '../../components/ProductMockup.astro';
 import Badge from '../../components/Badge.astro';
 import FAQ from '../../components/FAQ.astro';
+import TestimonialCarousel from '../../components/TestimonialCarousel.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import { getWhatsAppUrl, getWhatsAppOrderUrl, getWhatsAppBundleUrl } from '../../data/contact';
 import {
@@ -450,39 +451,11 @@ const productSchema = {
       )}
 
       {productTestimonials.length > 0 && (
-        <section class="product-testimonials section">
-          <div class="container container-narrow">
-            <h2 class="details-heading details-heading--center">Lo que dicen nuestros clientes</h2>
-            <div class="testimonials-grid">
-              {productTestimonials.map((t) => (
-                <article class="testimonial-card">
-                  <div class="testimonial-stars" aria-label={`${t.rating} de 5 estrellas`}>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg
-                        class={`star ${i < t.rating ? 'star--filled' : ''}`}
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <blockquote class="testimonial-quote">“{t.quote}”</blockquote>
-                  <footer class="testimonial-footer">
-                    <div class="testimonial-author-row">
-                      <span class="testimonial-author">{t.author}</span>
-                      {t.verified && <span class="verified-badge">Verified buyer</span>}
-                    </div>
-                    {t.role && <span class="testimonial-role">{t.role}</span>}
-                  </footer>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <TestimonialCarousel
+          title="Lo que dicen nuestros clientes"
+          subtitle="Reseñas verificadas de atletas y entusiastas del fitness en Perú."
+          testimonials={productTestimonials}
+        />
       )}
 
       {relatedProducts.length > 0 && (
@@ -1156,14 +1129,4 @@ const productSchema = {
     color: var(--color-text-muted);
   }
 
-  .verified-badge {
-    font-size: 0.625rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 2px 6px;
-    border: 1px solid var(--color-accent);
-    color: var(--color-accent);
-    border-radius: 999px;
-  }
 </style>
